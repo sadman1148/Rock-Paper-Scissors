@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+
+    <style>
+        body {
+            text-align: center;
+        }
+
+        button {
+            border-color: black;
+            border-width: 2px;
+            border-style: solid;
+            background-color: white;
+            cursor: pointer;
+            padding: 20px;
+            border-radius: 50%;
+            margin: 10px;
+        }
+
+        img {
+            height: 80px;
+            width: 80px;
+        }
+
+        p {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .mainbody {
+            margin-top: 100px;
+        }
+
+        .midbody {
+            margin-top: 100px;
+        }
+
+        .flexVsPanel {
+            display: inline-flex;
+        }
+
+        .flexChild {
+            border-radius: 4%;
+            border: 2px solid black;
+            flex: 1;
+            box-shadow: 0px 0px 15px grey;
+        }
+
+        button:hover {
+            box-shadow: 0px 0px 15px rgb(30, 184, 255);
+        }
+
+        .vs {
+            margin: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="mainbody">
+        <button onclick="performButtonClick(0)"><img src="images/rock.png" /></button>
+        <button onclick="performButtonClick(1)"><img src="images/paper.png" /></button>
+        <button onclick="performButtonClick(2)"><img src="images/scissors.png" /></button>
+    </div>
+
+    <div class="midbody">
+        <div class="flexVsPanel">
+
+            <div class="flexChild User" style="margin-right: 30px;">
+                <img id="player" style="padding: 20px;" src="images/user.png" />
+                <img id="player_move" style="visibility: hidden;padding: 20px;" />
+                <p id="playerScore">PLAYER</p>
+            </div>
+
+            <div class="vs">
+                <img src="images/vs.png" style="height: 50px; width: 50px;" />
+            </div>
+
+            <div class="flexChild Pc" style="margin-left: 30px;">
+                <img id="pc_move" style="visibility: hidden;padding: 20px;" />
+                <img id="pc" style="padding: 20px;" src="images/pc.png" />
+                <p id="pcScore">PC</p>
+            </div>
+
+        </div>
+
+        <p id="result_para" style="margin-top: 100px;">Choose a move!</p>
+
+    </div>
+
+    <script>
+
+        let move = generateRandomMove();
+        let playerScore = 0;
+        let pcScore = 0;
+
+        function performButtonClick(buttonId) {
+            setImage(buttonId);
+            if (buttonId == move) {
+                viewResult(0);
+            } else if (
+                (move == 1 && buttonId == 0) ||
+                (move == 2 && buttonId == 1) ||
+                (move == 0 && buttonId == 2)) {
+                viewResult(-1);
+            } else {
+                viewResult(1);
+            }
+            move = generateRandomMove();
+            updateScoreBoard();
+        }
+
+        function setImage(buttonId) {
+            imgPc = document.getElementById('pc_move');
+            imgPlayer = document.getElementById('player_move');
+
+            if (move == 0) {
+                imgPc.src = "images/rock.png"
+            } else if (move == 1) {
+                imgPc.src = "images/paper.png"
+            } else {
+                imgPc.src = "images/scissors.png"
+            }
+
+            if (buttonId == 0) {
+                imgPlayer.src = "images/rock.png"
+            } else if (buttonId == 1) {
+                imgPlayer.src = "images/paper.png"
+            } else {
+                imgPlayer.src = "images/scissors.png"
+            }
+
+            imgPc.style.visibility = "visible";
+            imgPlayer.style.visibility = "visible";
+        }
+
+        function generateRandomMove() {
+            return Math.floor(Math.random() * 3);
+        }
+
+        function viewResult(result) {
+            paragraph = document.getElementById('result_para');
+            if (result == 0) {
+                paragraph.innerText = "TIE";
+            } else if (result == 1) {
+                paragraph.innerText = "Player Wins!";
+                playerScore++;
+            } else {
+                paragraph.innerText = "PC Wins!";
+                pcScore++;
+            }
+        }
+
+        function updateScoreBoard() {
+            document.getElementById('playerScore').innerText = `PLAYER: ${playerScore}`;
+            document.getElementById('pcScore').innerText = `PC: ${pcScore}`;
+        }
+
+    </script>
+</body>
+
+</html>
